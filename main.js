@@ -5,10 +5,14 @@
 var currentElement,
     currentElements,
     currentElementIndex,
-    nextButton = document.querySelector('.selector-next')
+    nextButton = document.querySelector('.selector-next'),
+    prevButton = document.querySelector('.selector-prev'),
+    firstChildBtn = document.querySelector('.nav-bottom'),
+    parentNodeBtn = document.querySelector('.nav-top'),
+    prevSiblingBtn = document.querySelector('.nav-left'),
     nextSiblingBtn = document.querySelector('.nav-right');
 
-var i = 0;
+
 
 //document.querySelector('.selector-find').addEventListener('click', findSelector);
 
@@ -22,67 +26,46 @@ function findSelector(){
     }
 }
 
-function allElements() {
-    var selectorName = document.querySelector(".selector").value;
-    return Array.prototype.slice.call(document.getElementsByTagName(selectorName), 0);
-}
-
 function next(array){
     currentElementIndex++;
     currentElement = currentElements[currentElementIndex];
-    refreshNextButton();
+    //refreshNextButton();
+    refreshButtons();
 }
 
-function prevButton(array){
-    var nextSelector = allElements(array);
-    if (i > nextSelector.length-1) {
-        i = 0;
-
-    }else {
-        currentElementIndex = nextSelector[i];
-        //nextSelector[i].classList.add('prev');
-        i--;
-    }
-    return nextSelector;
+function prev(array){
+    currentElementIndex--;
+    currentElement = currentElements[currentElementIndex];
+    //refreshPrevButton();
+    refreshButtons();
 }
 
-function parentNode() {
+function parentNode(btn) {
     currentElement = currentElement.parentNode;
+    //refreshParentNodeButton();
+    refreshButtons();
     console.log(currentElement);
 }
 
-function firstChild() {
+function firstChild(btn) {
     currentElement = currentElement.firstElementChild;
+    //refreshFirstChildButton();.
+    refreshButtons();
     console.log(currentElement);
 }
 
 function nextElementSibling(btn) {
     currentElement = currentElement.nextElementSibling;
-    refreshNextSiblingButton();
+    //refreshNextSiblingButton();
+    refreshButtons();
     console.log(currentElement, 'next');
 
 }
-
-function prevElementSibling() {
+function prevElementSibling(btn) {
     currentElement = currentElement.previousElementSibling;
-    console.log(currentElement);
-}
-
-//document.querySelector('.selector-find').addEventListener('click', enableButton);
-
-function enableButton(array) {
-
-    if(nextButton(array).length > 2){
-        document.querySelector('.selector-next').disabled = false;
-    } else {
-        document.querySelector('.selector-next').disabled = true;
-    }
-    if(prevButton(array).length > 2){
-        document.querySelector('.selector-prev').disabled = false;
-    } else {
-        document.querySelector('.selector-prev').disabled = true;
-    }
-
+    //refreshPrevSiblingButton();
+    refreshButtons();
+    console.log(currentElement, 'prev');
 }
 
 document.querySelector('.jsbursa-panel').addEventListener('click', function(e) {
@@ -92,32 +75,29 @@ document.querySelector('.jsbursa-panel').addEventListener('click', function(e) {
             console.log('remove', currentElement);
         }
 
-        /*currentElementIndex && currentElementIndex.classList.remove('active');
-        currentElementIndex && currentElementIndex.classList.remove('prev');*/
-
         if(e.srcElement.className.indexOf('selector-find') !== -1){
             findSelector(e.srcElement.value);
         }
         if(e.srcElement.className.indexOf('selector-next') !== -1) {
-            next(e.srcElement.value);
+            next(e.srcElement);
         }
         if(e.srcElement.className.indexOf('selector-prev') !== -1) {
-            prevButton(e.srcElement.value);
+            prev(e.srcElement);
         }
         if(e.srcElement.className.indexOf('nav-top') !== -1){
-            parentNode(e.srcElement.value);
+            parentNode(e.srcElement);
         }
         if(e.srcElement.className.indexOf('nav-bottom') !== -1){
-            firstChild(e.srcElement.value);
+            firstChild(e.srcElement);
         }
         if(e.srcElement === nextSiblingBtn){
             nextElementSibling(e.srcElement);
         }
-        if(e.srcElement.className.indexOf('nav-left') !== -1){
-            prevElementSibling(e.srcElement.value);
+        if(e.srcElement === prevSiblingBtn){
+            prevElementSibling(e.srcElement);
         }
 
-        console.log(currentElement)
+        console.log(currentElement);
         currentElement.classList.add('active');
 
     }
@@ -126,7 +106,11 @@ document.querySelector('.jsbursa-panel').addEventListener('click', function(e) {
 
 function refreshButtons(){
     refreshNextSiblingButton();
+    refreshPrevSiblingButton();
     refreshNextButton();
+    refreshPrevButton();
+    refreshParentNodeButton();
+    refreshFirstChildButton();
 }
 
 function refreshNextButton(){
@@ -134,6 +118,13 @@ function refreshNextButton(){
         nextButton.disabled = false;
     }else{
         nextButton.disabled = true;
+    }
+}
+function refreshPrevButton(){
+    if(hasPrev()){
+        prevButton.disabled = false;
+    }else {
+        prevButton.disabled = true;
     }
 }
 
@@ -144,12 +135,50 @@ function refreshNextSiblingButton(){
         nextSiblingBtn.disabled = true;
     }
 }
+function refreshPrevSiblingButton(){
+    if(hasPrevSibling()){
+        prevSiblingBtn.disabled = false;
+    }else {
+        prevSiblingBtn.disabled = true;
+    }
+}
+function refreshParentNodeButton() {
+    if(hasParentNode()){
+        parentNodeBtn.disabled = false;
+    }else {
+        parentNodeBtn.disabled = true;
+    }
+}
+function refreshFirstChildButton() {
+    if(hasFirstChild()){
+        firstChildBtn.disabled = false;
+    }else {
+        firstChildBtn.disabled = true;
+    }
+}
 
 function hasNextSibling(){
     return currentElement.nextElementSibling;
 }
 
+function hasFirstChild() {
+    return currentElement.firstElementChild;
+}
+
+function hasPrevSibling(){
+    return currentElement.previousElementSibling;
+}
+
+function hasParentNode(){
+    return currentElement.parentNode;
+}
+
 function hasNext(){
-    console.log(currentElementIndex, currentElements.length)
+    console.log(currentElementIndex, currentElements.length);
     return currentElements && currentElementIndex < currentElements.length - 1;
+}
+
+function hasPrev(){
+    console.log(currentElementIndex, currentElements.length);
+    return currentElements && currentElementIndex > 0 ;
 }
