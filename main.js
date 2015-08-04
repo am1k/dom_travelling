@@ -1,3 +1,23 @@
+function DOMObservable(){
+    this.init();
+}
+
+DOMObservable.prototype = {
+    init: function(){
+        this.findElements();
+        this.addHandlers();
+    },
+    findSelector: function(){
+        var selectorName = document.querySelector(".selector").value;
+        this.currentElementIndex = 0;
+        if(selectorName !== null || undefined) {
+            this.currentElements = document.querySelectorAll(selectorName);
+            this.currentElement = this.currentElements[currentElementIndex];
+        }
+    }
+};
+
+
 /**
  * Created by v.bogoroditskiy on 7/31/2015.
  */
@@ -13,7 +33,6 @@ var currentElement,
     nextSiblingBtn = document.querySelector('.nav-right');
 
 
-
 //document.querySelector('.selector-find').addEventListener('click', findSelector);
 
 function findSelector(){
@@ -22,49 +41,43 @@ function findSelector(){
     if(selectorName !== null || undefined) {
         currentElements = document.querySelectorAll(selectorName);
         currentElement = currentElements[currentElementIndex];
-        refreshButtons();
     }
 }
+
+findSelector.prototype.next = function(array) {
+    currentElementIndex++;
+    currentElement = currentElements[currentElementIndex];
+}
+
 
 function next(array){
     currentElementIndex++;
     currentElement = currentElements[currentElementIndex];
-    //refreshNextButton();
-    refreshButtons();
 }
 
 function prev(array){
     currentElementIndex--;
     currentElement = currentElements[currentElementIndex];
-    //refreshPrevButton();
-    refreshButtons();
+
 }
 
 function parentNode(btn) {
     currentElement = currentElement.parentNode;
-    //refreshParentNodeButton();
-    refreshButtons();
     console.log(currentElement);
 }
 
 function firstChild(btn) {
     currentElement = currentElement.firstElementChild;
-    //refreshFirstChildButton();.
-    refreshButtons();
     console.log(currentElement);
 }
 
 function nextElementSibling(btn) {
     currentElement = currentElement.nextElementSibling;
-    //refreshNextSiblingButton();
-    refreshButtons();
     console.log(currentElement, 'next');
 
 }
 function prevElementSibling(btn) {
     currentElement = currentElement.previousElementSibling;
-    //refreshPrevSiblingButton();
-    refreshButtons();
     console.log(currentElement, 'prev');
 }
 
@@ -78,16 +91,17 @@ document.querySelector('.jsbursa-panel').addEventListener('click', function(e) {
         if(e.srcElement.className.indexOf('selector-find') !== -1){
             findSelector(e.srcElement.value);
         }
-        if(e.srcElement.className.indexOf('selector-next') !== -1) {
-            next(e.srcElement);
+        if(e.srcElement === nextButton) {
+            console.log(this.next);
+            this.next(e.srcElement);
         }
-        if(e.srcElement.className.indexOf('selector-prev') !== -1) {
+        if(e.srcElement === prevButton) {
             prev(e.srcElement);
         }
-        if(e.srcElement.className.indexOf('nav-top') !== -1){
+        if(e.srcElement === parentNodeBtn){
             parentNode(e.srcElement);
         }
-        if(e.srcElement.className.indexOf('nav-bottom') !== -1){
+        if(e.srcElement === firstChildBtn){
             firstChild(e.srcElement);
         }
         if(e.srcElement === nextSiblingBtn){
@@ -97,9 +111,8 @@ document.querySelector('.jsbursa-panel').addEventListener('click', function(e) {
             prevElementSibling(e.srcElement);
         }
 
-        console.log(currentElement);
         currentElement.classList.add('active');
-
+        refreshButtons();
     }
 });
 
@@ -120,6 +133,7 @@ function refreshNextButton(){
         nextButton.disabled = true;
     }
 }
+
 function refreshPrevButton(){
     if(hasPrev()){
         prevButton.disabled = false;
@@ -135,6 +149,7 @@ function refreshNextSiblingButton(){
         nextSiblingBtn.disabled = true;
     }
 }
+
 function refreshPrevSiblingButton(){
     if(hasPrevSibling()){
         prevSiblingBtn.disabled = false;
@@ -142,6 +157,7 @@ function refreshPrevSiblingButton(){
         prevSiblingBtn.disabled = true;
     }
 }
+
 function refreshParentNodeButton() {
     if(hasParentNode()){
         parentNodeBtn.disabled = false;
@@ -149,6 +165,7 @@ function refreshParentNodeButton() {
         parentNodeBtn.disabled = true;
     }
 }
+
 function refreshFirstChildButton() {
     if(hasFirstChild()){
         firstChildBtn.disabled = false;
@@ -157,12 +174,12 @@ function refreshFirstChildButton() {
     }
 }
 
-function hasNextSibling(){
-    return currentElement.nextElementSibling;
-}
-
 function hasFirstChild() {
     return currentElement.firstElementChild;
+}
+
+function hasNextSibling(){
+    return currentElement.nextElementSibling;
 }
 
 function hasPrevSibling(){
