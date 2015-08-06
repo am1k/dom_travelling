@@ -152,3 +152,4 @@ DOMObservable.prototype = {
         return this.currentElements && this.currentElementIndex > 0 ;
     }
 };
+console.log(new DOMObservable());
