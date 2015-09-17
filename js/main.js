@@ -30,7 +30,7 @@ DOMObservable.prototype = {
                     self.currentElement.classList.remove('active');
                 }
                 if(e.srcElement.className.indexOf('selector-find') !== -1){
-                    self.findSelector(e.srcElement.value);
+                    self.findSelector(e.srcElement.val);
                 }
                 if(e.srcElement === self.nextButton) {
                     self.next(e.srcElement);
@@ -152,4 +152,4 @@ DOMObservable.prototype = {
         return this.currentElements && this.currentElementIndex > 0 ;
     }
 };
-console.log(new DOMObservable());
+new DOMObservable();

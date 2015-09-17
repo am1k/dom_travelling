@@ -1,0 +1,11 @@
+Введите селектор:
+<input class="selector" type="text" />
+<button class="selector-find" >Найти</button>
+<button class="selector-next" disabled="<%=nextButton ? '' : 'disabled' %>">Следующий</button>
+<button class="selector-prev" disabled="<%=prevButton ? '' : 'disabled' %>">Предыдущий</button>
+<hr/>
+Навигация по дереву:<br/>
+<button class="nav-top" disabled="<%=parentNodeBtn ? '' : 'disabled' %>">Родитель</button><br/>
+<button class="nav-bottom" disabled="<%=firstChildBtn ? '' : 'disabled' %>">Первый ребенок</button><br/>
+<button class="nav-left" disabled="<%=prevSiblingBtn ? '' : 'disabled' %>">Предыдущий сосед</button><br/>
+<button class="nav-right" disabled="<%=nextSiblingBtn ? '' : 'disabled' %>">Следующий сосед</button><br/>

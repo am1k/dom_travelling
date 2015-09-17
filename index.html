@@ -4,8 +4,8 @@
 	<meta charset="utf-8">
 	<title>CSS Zen Garden: The Beauty of CSS Design</title>
 
-    <link rel="stylesheet" media="screen" href="style.css">
-    <link rel="stylesheet" media="screen" href="panel.css">
+    <link rel="stylesheet" media="screen" href="css/style.css">
+    <link rel="stylesheet" media="screen" href="css/panel.css">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="Dave Shea">
@@ -42,21 +42,7 @@
 
 		
 -->
-
 <body id="css-zen-garden">
-<div class="jsbursa-panel">
-   Введите селектор:
-   <input class="selector" type="text" />
-    <button class="selector-find" >Найти</button>
-    <button class="selector-next" disabled="disabled">Следующий</button>
-    <button class="selector-prev" disabled="disabled">Предыдущий</button>
-    <hr/>
-    Навигация по дереву:<br/>
-    <button class="nav-top" disabled="disabled">Родитель</button><br/>
-    <button class="nav-bottom" disabled="disabled">Первый ребенок</button><br/>
-    <button class="nav-left" disabled="disabled">Предыдущий сосед</button><br/>
-    <button class="nav-right" disabled="disabled">Следующий сосед</button><br/>
-</div>
 <div class="page-wrapper">
 
 	<section class="intro" id="zen-intro">
@@ -203,5 +189,9 @@
 <div class="extra4" role="presentation"></div><div class="extra5" role="presentation"></div><div class="extra6" role="presentation"></div>
 
 </body>
-<script src="main.js"></script>
+<!--<script src="js/jquery-2.1.4.min.js"></script>-->
+<!--<script src="js/underscore.js"></script>-->
+<!--<script src="js/backbone.js"></script>-->
+<!--<script src="js/text.js"></script>-->
+<script data-main="js/app.js" src="js/require.js"></script>
 </html>
