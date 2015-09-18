@@ -8,7 +8,8 @@ requirejs.config({
         jquery: 'jquery-2.1.4.min',
         underscore: 'underscore',
         backbone: 'backbone',
-        text: 'text'
+        text: 'text',
+        stickit: 'backbone.stickit'
     }
 });
 

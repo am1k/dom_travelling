@@ -1,10 +1,73 @@
 /**
  * Created by v.bogoroditskiy on 9/15/2015.
  */
-define(['backbone', 'text!../template/navigation_template.html', './model'], function(Backbone, myTemplate, ModelSearch){
+define([
+    'backbone',
+    'text!../template/navigation_template.html',
+    './model',
+    './backbone.stickit'
+    ],
+    function(Backbone, myTemplate, ModelSearch, stickit){
 
     var ViewSearch = Backbone.View.extend({
         className: 'jsbursa-panel',
+
+        bindings: {
+            '.selector-next': {
+                attributes: [{
+                    observe: 'nextButton',
+                    name: 'disabled',
+                    onGet: function(val){
+                        return !val ? 'disabled' : '';
+                    }
+                }]
+            },
+            '.selector-prev': {
+                attributes: [{
+                    observe: 'prevButton',
+                    name: 'disabled',
+                    onGet: function(val){
+                        return !val ? 'disabled' : '';
+                    }
+                }]
+            },
+            '.nav-top': {
+                attributes: [{
+                        observe: 'parentNodeBtn',
+                        name: 'disabled',
+                        onGet: function (val) {
+                            return !val ? 'disabled' : '';
+                        }
+                    }]
+            },
+            '.nav-bottom': {
+                attributes: [{
+                        observe: 'firstChildBtn',
+                        name: 'disabled',
+                        onGet: function (val) {
+                            return !val ? 'disabled' : '';
+                        }
+                    }]
+            },
+            '.nav-left': {
+                attributes: [{
+                    observe: 'prevSiblingBtn',
+                    name: 'disabled',
+                    onGet: function(val){
+                        return !val ? 'disabled' : '';
+                    }
+                }]
+            },
+            '.nav-right': {
+                attributes: [{
+                    observe: 'nextSiblingBtn',
+                    name: 'disabled',
+                    onGet: function(val){
+                        return !val ? 'disabled' : '';
+                    }
+                }]
+            }
+        },
 
         tagName: 'div',
 
@@ -45,9 +108,11 @@ define(['backbone', 'text!../template/navigation_template.html', './model'], fun
             this.refreshButtons();
         },
 
-        nextSelector: function(array){
+        nextSelector: function(){
+            console.log( this.currentElementIndex++);
             this.currentElementIndex++;
             this.currentElement = this.currentElements[this.currentElementIndex];
+            console.log(this.currentElement);
         },
 
         prev: function(){
@@ -57,7 +122,7 @@ define(['backbone', 'text!../template/navigation_template.html', './model'], fun
             this.refreshButtons();
         },
 
-        prevSelector: function(array){
+        prevSelector: function(){
             this.currentElementIndex--;
             this.currentElement = this.currentElements[this.currentElementIndex];
         },
@@ -69,7 +134,7 @@ define(['backbone', 'text!../template/navigation_template.html', './model'], fun
             this.refreshButtons();
         },
 
-        parentNode: function(btn){
+        parentNode: function(){
             this.currentElement = this.currentElement.parentNode;
         },
 
@@ -80,7 +145,7 @@ define(['backbone', 'text!../template/navigation_template.html', './model'], fun
             this.refreshButtons();
         },
 
-        firstChildSelector: function(btn){
+        firstChildSelector: function(){
             this.currentElement = this.currentElement.firstElementChild;
         },
 
@@ -91,7 +156,7 @@ define(['backbone', 'text!../template/navigation_template.html', './model'], fun
             this.refreshButtons();
         },
 
-        prevElementSibling: function(btn) {
+        prevElementSibling: function() {
             this.currentElement = this.currentElement.previousElementSibling;
         },
 
@@ -102,7 +167,7 @@ define(['backbone', 'text!../template/navigation_template.html', './model'], fun
             this.refreshButtons();
         },
 
-        nextElementSibling: function(btn){
+        nextElementSibling: function(){
             this.currentElement = this.currentElement.nextElementSibling;
         },
 
@@ -113,7 +178,6 @@ define(['backbone', 'text!../template/navigation_template.html', './model'], fun
         },
 
         addClass: function(){
-            console.log(this.currentElement);
             this.currentElement.classList.add('active');
         },
 
@@ -154,14 +218,13 @@ define(['backbone', 'text!../template/navigation_template.html', './model'], fun
 
         initialize: function(){
             this.render();
-
-            this.listenTo(this.model, 'change', this.render);
             return this;
         },
 
         render: function(){
             this.$el.html(this.template( this.model.toJSON() ));
             this.currentElement = null;
+            this.stickit(this.model, this.bindings);
             return this;
         }
     });
